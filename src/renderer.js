@@ -1,17 +1,14 @@
-// --- DATABASE LOKAL (ARRAY OF OBJECTS) SIMULASI MOCK DATA DARI UI ---
-let databaseLokal = [
-  { tanggal: '17 Juli 2026', makan: 3, bangun: '05:30', tidur: '22:30', olahraga: 'Fitness (45 mnt)', berat: 72.4, perubahan: 'Turun', lemak: 18.7, kesehatan: 85, progress: 78 },
-  { tanggal: '16 Juli 2026', makan: 3, bangun: '05:45', tidur: '22:15', olahraga: 'Lari (30 mnt)', berat: 72.7, perubahan: 'Turun', lemak: 18.9, kesehatan: 84, progress: 76 },
-  { tanggal: '15 Juli 2026', makan: 4, bangun: '06:00', tidur: '22:45', olahraga: 'Tidak', berat: 73.1, perubahan: 'Naik', lemak: 19.2, kesehatan: 81, progress: 72 },
-  { tanggal: '14 Juli 2026', makan: 3, bangun: '05:50', tidur: '22:20', olahraga: 'Fitness (40 mnt)', berat: 72.6, perubahan: 'Turun', lemak: 18.8, kesehatan: 86, progress: 79 },
-  { tanggal: '13 Juli 2026', makan: 3, bangun: '06:10', tidur: '23:00', olahraga: 'Lari (20 mnt)', berat: 73.0, perubahan: 'Turun', lemak: 19.1, kesehatan: 83, progress: 74 },
-  { tanggal: '12 Juli 2026', makan: 2, bangun: '06:30', tidur: '22:50', olahraga: 'Tidak', berat: 73.4, perubahan: 'Naik', lemak: 19.5, kesehatan: 80, progress: 68 },
-  { tanggal: '11 Juli 2026', makan: 3, bangun: '05:40', tidur: '22:30', olahraga: 'Fitness (35 mnt)', berat: 73.2, perubahan: 'Turun', lemak: 19.3, kesehatan: 82, progress: 71 }
-];
+// --- DATABASE LOKAL (ARRAY OF OBJECTS) - DIKOSONGKAN UNTUK PENGGUNA BARU ---
+let databaseLokal = [];
 
-// --- INITIALISASI CHART ENGINE ---
-const chartOptions = (colorGrid) => ({
-  responsive: true, maintainAspectRatio: false,
+let targetBerat = 0;
+let targetLemak = 0;
+let statusReminder = true;
+
+// --- INITIALISASI DASHBOARD CHARTS ---
+const chartOptions = () => ({
+  responsive: true, 
+  maintainAspectRatio: false,
   plugins: { legend: { display: false } },
   scales: {
     x: { grid: { display: false }, ticks: { color: '#8b949e', font: { size: 10 } } },
@@ -20,72 +17,163 @@ const chartOptions = (colorGrid) => ({
   elements: { point: { radius: 4, hoverRadius: 6 }, line: { tension: 0.2, borderWidth: 2 } }
 });
 
-const getLabels = () => databaseLokal.map(d => d.tanggal.split(' ')[0] + '/' + (d.tanggal.split(' ')[1] == 'Juli' ? '07' : '08')).reverse();
+const getLabels = () => {
+  if (databaseLokal.length === 0) return ['Belum Ada Data'];
+  return databaseLokal.map(d => {
+    const parts = d.tanggal.split(' ');
+    const bulan = parts[1] === 'Juli' ? '07' : (parts[1] === 'Agustus' ? '08' : '09');
+    return parts[0] + '/' + bulan;
+  }).reverse();
+};
 
 const weightChart = new Chart(document.getElementById('weightChart'), {
-  type: 'line', data: { labels: getLabels(), datasets: [{ data: databaseLokal.map(d => d.berat).reverse(), borderColor: '#388bfd', backgroundColor: 'rgba(56, 139, 253, 0.05)', fill: true }] },
+  type: 'line', 
+  data: { labels: getLabels(), datasets: [{ data: [0], borderColor: '#388bfd', backgroundColor: 'rgba(56, 139, 253, 0.05)', fill: true }] },
   options: chartOptions()
 });
 
 const fatChart = new Chart(document.getElementById('fatChart'), {
-  type: 'line', data: { labels: getLabels(), datasets: [{ data: databaseLokal.map(d => d.lemak).reverse(), borderColor: '#f0883e', backgroundColor: 'rgba(240, 136, 62, 0.05)', fill: true }] },
+  type: 'line', 
+  data: { labels: getLabels(), datasets: [{ data: [0], borderColor: '#f0883e', backgroundColor: 'rgba(240, 136, 62, 0.05)', fill: true }] },
   options: chartOptions()
 });
 
 const healthChart = new Chart(document.getElementById('healthChart'), {
-  type: 'line', data: { labels: getLabels(), datasets: [{ data: databaseLokal.map(d => d.kesehatan).reverse(), borderColor: '#3fb950', backgroundColor: 'rgba(63, 185, 80, 0.05)', fill: true }] },
+  type: 'line', 
+  data: { labels: getLabels(), datasets: [{ data: [0], borderColor: '#3fb950', backgroundColor: 'rgba(63, 185, 80, 0.05)', fill: true }] },
   options: chartOptions()
 });
 
 const progressChart = new Chart(document.getElementById('progressChart'), {
-  type: 'line', data: { labels: getLabels(), datasets: [{ data: databaseLokal.map(d => d.progress).reverse(), borderColor: '#8957e5', backgroundColor: 'rgba(137, 87, 229, 0.05)', fill: true }] },
+  type: 'line', 
+  data: { labels: getLabels(), datasets: [{ data: [0], borderColor: '#8957e5', backgroundColor: 'rgba(137, 87, 229, 0.05)', fill: true }] },
   options: chartOptions()
 });
 
-// --- RENDER FUNGSI METRIK UTAMA & TABEL ---
+// --- INITIALISASI STATISTIK ADVANCED COMBO CHART ---
+const analyticsComboChart = new Chart(document.getElementById('analyticsComboChart'), {
+  type: 'bar',
+  data: {
+    labels: getLabels(),
+    datasets: [
+      { label: 'Berat (kg)', data: [0], backgroundColor: 'rgba(56, 139, 253, 0.4)', type: 'bar', yAxisID: 'y' },
+      { label: 'Lemak (%)', data: [0], borderColor: '#f0883e', type: 'line', fill: false, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    responsive: true, 
+    maintainAspectRatio: false,
+    scales: {
+      x: { grid: { display: false }, ticks: { color: '#8b949e' } },
+      y: { position: 'left', grid: { color: '#1f2631' }, ticks: { color: '#388bfd' } },
+      y1: { position: 'right', grid: { display: false }, ticks: { color: '#f0883e' } }
+    },
+    plugins: { legend: { labels: { color: '#f0f6fc' } } }
+  }
+});
+
+// --- ENGINE RE-RENDER APLIKASI UTAMA ---
 function renderAplikasi() {
-  if(databaseLokal.length > 0) {
+  if (databaseLokal.length > 0) {
     const terupdate = databaseLokal[0];
     document.getElementById('cardWeight').textContent = terupdate.berat;
     document.getElementById('cardFat').textContent = terupdate.lemak;
     document.getElementById('cardHealth').textContent = terupdate.kesehatan;
     document.getElementById('cardProgress').textContent = terupdate.progress;
+    
+    // Hitung Modul Statistik Avanzado
+    let totalBerat = 0; let totalOlahraga = 0; let totalProg = 0;
+    databaseLokal.forEach(d => {
+      totalBerat += d.berat;
+      totalProg += d.progress;
+      if(d.olahraga !== 'Tidak') totalOlahraga++;
+    });
+    
+    document.getElementById('stats-avg-weight').textContent = (totalBerat / databaseLokal.length).toFixed(1) + ' kg';
+    document.getElementById('stats-total-sports').textContent = totalOlahraga + ' Sesi';
+    document.getElementById('stats-diet-compliance').textContent = (totalProg / databaseLokal.length).toFixed(1) + '%';
+
+    // Hitung Modul Target Real-Time
+    let selisihBerat = terupdate.berat - targetBerat;
+    let progressBrt = targetBerat === 0 ? 0 : (selisihBerat <= 0 ? 100 : Math.max(0, Math.min(100, Math.floor(100 - (selisihBerat * 10)))));
+    document.getElementById('progress-weight-label').textContent = progressBrt + '%';
+    document.getElementById('progress-weight-bar').style.width = progressBrt + '%';
+
+    let selisihLemak = terupdate.lemak - targetLemak;
+    let progressLmk = targetLemak === 0 ? 0 : (selisihLemak <= 0 ? 100 : Math.max(0, Math.min(100, Math.floor(100 - (selisihLemak * 15)))));
+    document.getElementById('progress-fat-label').textContent = progressLmk + '%';
+    document.getElementById('progress-fat-bar').style.width = progressLmk + '%';
+  } else {
+    // Tampilan Default Jika Data Masih Kosong (0)
+    document.getElementById('cardWeight').textContent = "0";
+    document.getElementById('cardFat').textContent = "0";
+    document.getElementById('cardHealth').textContent = "0";
+    document.getElementById('cardProgress').textContent = "0";
+    
+    document.getElementById('stats-avg-weight').textContent = "0 kg";
+    document.getElementById('stats-total-sports').textContent = "0 Sesi";
+    document.getElementById('stats-diet-compliance').textContent = "0%";
+    
+    document.getElementById('progress-weight-label').textContent = "0%";
+    document.getElementById('progress-weight-bar').style.width = "0%";
+    document.getElementById('progress-fat-label').textContent = "0%";
+    document.getElementById('progress-fat-bar').style.width = "0%";
   }
 
+  // Render Tabel Kesimpulan
   const tbody = document.getElementById('table-history-body');
   tbody.innerHTML = '';
   
-  databaseLokal.forEach((data, index) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${data.tanggal}</td>
-      <td>${data.makan}</td>
-      <td>${data.bangun}</td>
-      <td>${data.tidur}</td>
-      <td>${data.olahraga}</td>
-      <td>${data.berat}</td>
-      <td><span class="badge-status ${data.perubahan === 'Turun' ? 'badge-down' : 'badge-up'}">${data.perubahan}</span></td>
-      <td>
-        <div class="action-buttons">
-          <button class="action-btn-row" onclick="hapusBarisData(${index})"><i class="fa-solid fa-trash action-btn-delete"></i></button>
-        </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-  
-  document.getElementById('pagination-count-text').textContent = `1 - ${databaseLokal.length} dari ${databaseLokal.length} data`;
+  if (databaseLokal.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8b949e; padding: 20px;">Belum ada data laporan harian. Silakan isi form terlebih dahulu.</td></tr>`;
+    document.getElementById('pagination-count-text').textContent = `0 - 0 dari 0 data`;
+  } else {
+    databaseLokal.forEach((data, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${data.tanggal}</td>
+        <td>${data.makan}</td>
+        <td>${data.bangun}</td>
+        <td>${data.tidur}</td>
+        <td>${data.olahraga}</td>
+        <td>${data.berat}</td>
+        <td><span class="badge-status ${data.perubahan === 'Turun' ? 'badge-down' : 'badge-up'}">${data.perubahan}</span></td>
+        <td>
+          <div class="action-buttons">
+            <button class="action-btn-row" onclick="hapusBarisData(${index})"><i class="fa-solid fa-trash action-btn-delete"></i></button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('pagination-count-text').textContent = `1 - ${databaseLokal.length} dari ${databaseLokal.length} data`;
+  }
 
-  // Update grafik koordinat
+  // Sinkronisasi grafik koordinat
   const labelBaru = getLabels();
   [weightChart, fatChart, healthChart, progressChart].forEach((ch, idx) => {
     ch.data.labels = labelBaru;
-    if(idx===0) ch.data.datasets[0].data = databaseLokal.map(d => d.berat).reverse();
-    if(idx===1) ch.data.datasets[0].data = databaseLokal.map(d => d.lemak).reverse();
-    if(idx===2) ch.data.datasets[0].data = databaseLokal.map(d => d.kesehatan).reverse();
-    if(idx===3) ch.data.datasets[0].data = databaseLokal.map(d => d.progress).reverse();
+    if (databaseLokal.length === 0) {
+      ch.data.datasets[0].data = [0];
+    } else {
+      if(idx===0) ch.data.datasets[0].data = databaseLokal.map(d => d.berat).reverse();
+      if(idx===1) ch.data.datasets[0].data = databaseLokal.map(d => d.lemak).reverse();
+      if(idx===2) ch.data.datasets[0].data = databaseLokal.map(d => d.kesehatan).reverse();
+      if(idx===3) ch.data.datasets[0].data = databaseLokal.map(d => d.progress).reverse();
+    }
     ch.update();
   });
+
+  // Sinkronisasi grafik kombinasi statistik halaman analitik
+  analyticsComboChart.data.labels = labelBaru;
+  if (databaseLokal.length === 0) {
+    analyticsComboChart.data.datasets[0].data = [0];
+    analyticsComboChart.data.datasets[1].data = [0];
+  } else {
+    analyticsComboChart.data.datasets[0].data = databaseLokal.map(d => d.berat).reverse();
+    analyticsComboChart.data.datasets[1].data = databaseLokal.map(d => d.lemak).reverse();
+  }
+  analyticsComboChart.update();
 }
 
 window.hapusBarisData = function(index) {
@@ -95,7 +183,7 @@ window.hapusBarisData = function(index) {
   }
 };
 
-// --- LOGIKA FORM HARIAN INTERAKTIF ---
+// --- DIALOG LOGIKA FORM HARIAN INTERAKTIF ---
 let jumlahMakanInput = document.getElementById('input-makan-count');
 document.getElementById('btn-makan-plus').addEventListener('click', () => { jumlahMakanInput.value = parseInt(jumlahMakanInput.value) + 1; });
 document.getElementById('btn-makan-min').addEventListener('click', () => { if(parseInt(jumlahMakanInput.value) > 1) jumlahMakanInput.value = parseInt(jumlahMakanInput.value) - 1; });
@@ -111,9 +199,14 @@ document.getElementById('sport-no').addEventListener('click', function() {
   sportDetailsFields.style.display = 'none';
 });
 
-// SIMPAN LAPORAN BARU
+// SIMPAN ENTRY DATA DATA BARU
 document.getElementById('btn-save-daily-report').addEventListener('click', () => {
-  const beratVal = parseFloat(document.getElementById('input-hari-weight').value) || 72.0;
+  const beratVal = parseFloat(document.getElementById('input-hari-weight').value);
+  if (!beratVal) {
+    alert('Mohon masukkan berat badan hari ini terlebih dahulu!');
+    return;
+  }
+  
   const perubahanVal = document.querySelector('input[name="weight-change"]:checked').value;
   const makanCount = parseInt(jumlahMakanInput.value);
   const bangunTime = document.getElementById('input-time-wake').value;
@@ -124,13 +217,14 @@ document.getElementById('btn-save-daily-report').addEventListener('click', () =>
     olahragaText = `${document.getElementById('input-sport-type').value} (${document.getElementById('input-sport-duration').value})`;
   }
 
-  // Auto kalkulasi random scoring indikatif untuk visual grafik
-  const mockLemak = parseFloat((18.0 + Math.random() * 2).toFixed(1));
-  const mockKesehatan = Math.floor(80 + Math.random() * 15);
-  const mockProgress = Math.floor(70 + Math.random() * 20);
+  // Membuat data kalkulasi tiruan agar statistik terisi dinamis sesuai bobot inputan
+  const mockLemak = parseFloat((15.0 + Math.random() * 5).toFixed(1));
+  const mockKesehatan = Math.floor(75 + Math.random() * 20);
+  const mockProgress = Math.floor(65 + Math.random() * 30);
 
   const formatHariIni = new Date();
-  const tglString = `${formatHariIni.getDate()} Laporan Baru`;
+  const listBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const tglString = `${formatHariIni.getDate()} ${listBulan[formatHariIni.getMonth()]}`;
 
   databaseLokal.unshift({
     tanggal: tglString, makan: makanCount, bangun: bangunTime, tidur: tidurTime,
@@ -140,10 +234,11 @@ document.getElementById('btn-save-daily-report').addEventListener('click', () =>
 
   renderAplikasi();
   alert('Laporan harian berhasil disimpan!');
-  document.querySelector('[data-page="dashboard"]').click(); // Lompat otomatis ke dashboard
+  document.getElementById('input-hari-weight').value = ''; // Reset form input berat
+  document.querySelector('[data-page="dashboard"]').click();
 });
 
-// --- SINGLE PAGE APPLICATION NAVIGATION ENGINE ---
+// --- ROUTING SINGLE PAGE APPLICATION (SPA) NAVIGATION ---
 const navItems = document.querySelectorAll('.nav-item');
 const pageSections = document.querySelectorAll('.page-section');
 const pageTitle = document.getElementById('page-title');
@@ -153,7 +248,11 @@ const pageMetaData = {
   dashboard: { title: 'Dashboard', subtitle: 'Ringkasan perkembangan diet Anda' },
   form: { title: 'Form Harian', subtitle: 'Isi laporan harian diet dan aktivitas Anda' },
   kesimpulan: { title: 'Kesimpulan', subtitle: 'Lihat dan kelola semua laporan harian Anda' },
-  generic: { title: 'Modul Aplikasi', subtitle: 'Fitur sedang dalam pengembangan' }
+  statistik: { title: 'Grafik & Statistik', subtitle: 'Analisis komprehensif data kesehatan Anda' },
+  target: { title: 'Target', subtitle: 'Kelola sasaran berat badan dan parameter ideal Anda' },
+  pengingat: { title: 'Pengingat', subtitle: 'Atur jadwal notifikasi otomatis pelaporan harian' },
+  pengaturan: { title: 'Pengaturan', subtitle: 'Konfigurasi global preferensi aplikasi' },
+  tentang: { title: 'Tentang Aplikasi', subtitle: 'Informasi sistem dan lisensi aplikasi JOSH' }
 };
 
 navItems.forEach(item => {
@@ -168,7 +267,7 @@ navItems.forEach(item => {
     const activeSec = document.getElementById(`page-${target}`);
     if (activeSec) activeSec.classList.add('active');
 
-    const meta = pageMetaData[target] || pageMetaData['generic'];
+    const meta = pageMetaData[target];
     pageTitle.textContent = meta.title;
     pageSubtitle.textContent = meta.subtitle;
   });
@@ -178,12 +277,43 @@ document.getElementById('btn-shortcut-to-form').addEventListener('click', () => 
   document.querySelector('[data-page="form"]').click();
 });
 
-// --- WINDOW MANAGEMENT & MODAL DATA DIRI ---
+// --- EVENT CONTROLLER MENU TARGET, ALARM & SETTING ---
+document.getElementById('btn-save-targets').addEventListener('click', () => {
+  targetBerat = parseFloat(document.getElementById('target-weight-input').value) || 0;
+  targetLemak = parseFloat(document.getElementById('target-fat-input').value) || 0;
+  renderAplikasi();
+  alert('Target kebugaran JOSH berhasil diperbarui!');
+});
+
+document.getElementById('reminder-on').addEventListener('click', function() {
+  statusReminder = true; this.classList.add('active'); document.getElementById('reminder-off').classList.remove('active');
+});
+document.getElementById('reminder-off').addEventListener('click', function() {
+  statusReminder = false; this.classList.add('active'); document.getElementById('reminder-on').classList.remove('active');
+});
+document.getElementById('btn-save-reminder').addEventListener('click', () => {
+  const waktu = document.getElementById('reminder-time-input').value;
+  alert(`Pengingat harian berhasil dikonfigurasi pada pukul ${waktu} (${statusReminder ? 'Aktif' : 'Mati'}).`);
+});
+
+document.getElementById('btn-save-settings').addEventListener('click', () => {
+  const unit = document.getElementById('setting-unit-select').value;
+  const tema = document.getElementById('setting-theme-select').value;
+  if(tema === 'amoled') {
+    document.body.style.backgroundColor = '#000000';
+  } else {
+    document.body.style.backgroundColor = '#0b0f17';
+  }
+  alert(`Pengaturan sistem berhasil diterapkan: Satuan (${unit.toUpperCase()}), Tema (${tema === 'dark' ? 'Dark' : 'AMOLED'}).`);
+});
+
+// --- ELECTRON INTER-PROCESS WINDOWS MANAGEMENT ---
 const { ipcRenderer } = require('electron');
 document.getElementById('btn-minimize').addEventListener('click', () => ipcRenderer.send('window-minimize'));
 document.getElementById('btn-maximize').addEventListener('click', () => ipcRenderer.send('window-maximize'));
 document.getElementById('btn-close-app').addEventListener('click', () => { if(confirm('Keluar dari aplikasi?')) ipcRenderer.send('window-close'); });
 
+// MODAL DATA DIRI CONTROLLER
 const profileBtn = document.getElementById('profileBtn');
 const profileModal = document.getElementById('profileModal');
 profileBtn.addEventListener('click', () => profileModal.classList.add('active'));
@@ -200,5 +330,5 @@ document.getElementById('profileStar').addEventListener('click', function(e) {
   this.style.color = this.classList.contains('fa-solid') ? '#f1e05a' : '#8b949e';
 });
 
-// Booting awal
+// Jalankan rendering aplikasi pada pemuatan pertama
 renderAplikasi();

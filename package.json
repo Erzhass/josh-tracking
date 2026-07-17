@@ -1,23 +1,47 @@
 {
-  "name": "josh-tracking",
+  "name": "josh-app",
   "version": "1.0.0",
-  "description": "Asisten pribadi pemantau diet berbasis Electron",
+  "description": "Your Diet. Your Progress.",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Erzhass/josh-tracking.git"
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
   "keywords": [],
-  "author": "Erzha Noverico",
+  "author": "Erzha",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Erzhass/josh-tracking/issues"
-  },
-  "homepage": "https://github.com/Erzhass/josh-tracking#readme",
   "devDependencies": {
-    "electron": "^30.0.0"
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.erzha.josh",
+    "productName": "JOSH",
+    "cscLink": null,
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "JOSH"
+    },
+    "files": [
+      "**/*"
+    ]
   }
 }

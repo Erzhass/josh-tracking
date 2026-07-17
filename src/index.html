@@ -115,23 +115,31 @@
         </div>
       </section>
 
-      <!-- Area 4 Box Grafik (Untuk grafik asli nanti kita pakai Chart.js, sekarang buat box visualnya dulu) -->
+      <!-- Area 4 Grafik Interaktif -->
       <section class="charts-grid">
         <div class="chart-box">
           <h4>Berat Badan (kg)</h4>
-          <div class="dummy-chart-line blue-line"></div>
+          <div class="chart-container">
+            <canvas id="weightChart"></canvas>
+          </div>
         </div>
         <div class="chart-box">
           <h4>Kadar Lemak (%)</h4>
-          <div class="dummy-chart-line orange-line"></div>
+          <div class="chart-container">
+            <canvas id="fatChart"></canvas>
+          </div>
         </div>
         <div class="chart-box">
           <h4>Skor Kesehatan</h4>
-          <div class="dummy-chart-line green-line"></div>
+          <div class="chart-container">
+            <canvas id="healthChart"></canvas>
+          </div>
         </div>
         <div class="chart-box">
           <h4>Keberhasilan Diet (%)</h4>
-          <div class="dummy-chart-line purple-line"></div>
+          <div class="chart-container">
+            <canvas id="progressChart"></canvas>
+          </div>
         </div>
       </section>
 
@@ -141,5 +149,6 @@
       </footer>
     </main>
   </div>
+  <script src="renderer.js"></script>
 </body>
 </html>

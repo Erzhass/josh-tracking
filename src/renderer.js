@@ -1,4 +1,4 @@
-// --- KONFIGURASI DAN INITIALISASI CHART (MULAI DARI O) ---
+// --- KONFIGURASI DAN INISIALISASI CHART (MULAI DARI O) ---
 const commonOptions = {
   responsive: true,
   maintainAspectRatio: false,
@@ -25,7 +25,7 @@ const commonOptions = {
 
 const labels = ['11/07', '12/07', '13/07', '14/07', '15/07', '16/07', '17/07'];
 
-// Nilai Awal Semua Data Set Adalah 0
+// Nilai Awal Semua Dataset Adalah 0
 const weightChart = new Chart(document.getElementById('weightChart'), {
   type: 'line',
   data: { labels: labels, datasets: [{ data: [0, 0, 0, 0, 0, 0, 0], borderColor: '#388bfd', backgroundColor: 'rgba(56, 139, 253, 0.05)', fill: true }] },
@@ -114,7 +114,9 @@ saveModalBtn.addEventListener('click', () => {
 });
 
 
-// --- FUNGSIONALITAS TOMBOL HEADER & WINDOWS ---
+// --- FUNGSIONALITAS TOMBOL WINDOWS ASLI ELECTRON ---
+const { ipcRenderer } = require('electron');
+
 document.getElementById('btn-period').addEventListener('click', () => {
   alert('Fitur filter rentang waktu (7 hari, 30 hari, dll.) akan terhubung dengan database.');
 });
@@ -123,14 +125,23 @@ document.getElementById('btn-noti').addEventListener('click', () => {
   alert('Tidak ada notifikasi baru saat ini.');
 });
 
-document.getElementById('btn-minimize').addEventListener('click', () => console.log('Minimize window'));
-document.getElementById('btn-maximize').addEventListener('click', () => console.log('Maximize window'));
+// Mengirimkan sinyal kontrol ke proses utama (main.js)
+document.getElementById('btn-minimize').addEventListener('click', () => {
+  ipcRenderer.send('window-minimize');
+});
+
+document.getElementById('btn-maximize').addEventListener('click', () => {
+  ipcRenderer.send('window-maximize');
+});
+
 document.getElementById('btn-close-app').addEventListener('click', () => {
-  if (confirm('Apakah Anda yakin ingin keluar dari aplikasi JOSH?')) console.log('App closed');
+  if (confirm('Apakah Anda yakin ingin keluar dari aplikasi JOSH?')) {
+    ipcRenderer.send('window-close');
+  }
 });
 
 document.getElementById('profileStar').addEventListener('click', function(e) {
-  e.stopPropagation(); // Mencegah modal ikut terbuka saat ikon bintang diklik
+  e.stopPropagation(); // Mencegah modal profil ikut terbuka saat ikon bintang diklik
   this.classList.toggle('fa-regular');
   this.classList.toggle('fa-solid');
   this.style.color = this.classList.contains('fa-solid') ? '#f1e05a' : '#8b949e';

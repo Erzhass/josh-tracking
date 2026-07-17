@@ -1,3 +1,13 @@
+/* Membuat Header Bisa Diseret */
+.content-header {
+  -webkit-app-region: drag;
+}
+
+/* Memastikan tombol di header tetap bisa diklik */
+.header-right, .dropdown-period, .icon-btn {
+  -webkit-app-region: no-drag;
+}
+
 * {
   margin: 0;
   padding: 0;

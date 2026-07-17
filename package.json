@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/Erzhass/josh-tracking#readme",
   "devDependencies": {
-    "electron": "^43.1.1"
+    "electron": "^30.0.0"
   }
 }

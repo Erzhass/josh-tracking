@@ -1,0 +1,23 @@
+{
+  "name": "josh-tracking",
+  "version": "1.0.0",
+  "description": "Asisten pribadi pemantau diet berbasis Electron",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Erzhass/josh-tracking.git"
+  },
+  "keywords": [],
+  "author": "Erzha Noverico",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Erzhass/josh-tracking/issues"
+  },
+  "homepage": "https://github.com/Erzhass/josh-tracking#readme",
+  "devDependencies": {
+    "electron": "^43.1.1"
+  }
+}

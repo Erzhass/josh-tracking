@@ -5,50 +5,141 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JOSH - Your Diet. Your Progress.</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Font Awesome untuk Ikon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="app-container">
     <!-- Sidebar Kiri -->
     <aside class="sidebar">
       <div class="logo-section">
-        <h2>JOSH</h2>
-        <p>Your Diet. Your Progress.</p>
+        <i class="fa-solid fa-heart-pulse logo-icon"></i>
+        <div>
+          <h2>JOSH</h2>
+          <p>Your Diet. Your Progress.</p>
+        </div>
       </div>
+      
       <nav class="nav-menu">
-        <a href="#" class="nav-item active">Dashboard</a>
-        <a href="#" class="nav-item">Form Harian</a>
-        <a href="#" class="nav-item">Kesimpulan</a>
-        <a href="#" class="nav-item">Grafik & Statistik</a>
-        <a href="#" class="nav-item">Target</a>
-        <a href="#" class="nav-item">Pengingat</a>
-        <a href="#" class="nav-item">Pengaturan</a>
-        <a href="#" class="nav-item">Tentang Aplikasi</a>
+        <a href="#" class="nav-item active"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-calendar-day"></i> Form Harian</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-list-check"></i> Kesimpulan</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i> Grafik & Statistik</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-bullseye"></i> Target</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i> Pengingat</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a>
       </nav>
+
       <div class="user-profile">
-        <div class="avatar"></div>
+        <div class="avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
         <div class="user-info">
           <span class="username">Erzha Noverico</span>
           <span class="badge">Premium User</span>
         </div>
+        <i class="fa-regular fa-star star-icon"></i>
       </div>
     </aside>
 
-    <!-- Konten Utama Halaman -->
+    <!-- Konten Utama -->
     <main class="main-content">
+      <!-- Header Atas -->
       <header class="content-header">
-        <h1>Dashboard</h1>
-        <p>Ringkasan perkembangan diet Anda</p>
+        <div>
+          <h1>Dashboard</h1>
+          <p class="subtitle">Ringkasan perkembangan diet Anda</p>
+        </div>
+        <div class="header-right">
+          <div class="dropdown-period">
+            <i class="fa-regular fa-calendar"></i> 7 Hari Terakhir <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <i class="fa-regular fa-bell icon-btn"></i>
+          <i class="fa-regular fa-window-minimize icon-btn"></i>
+          <i class="fa-regular fa-square icon-btn"></i>
+          <i class="fa-solid fa-xmark icon-btn"></i>
+        </div>
       </header>
       
-      <!-- Slot Konten Halaman akan ditaruh di sini -->
+      <!-- 4 Kartu Ringkasan Atas -->
       <section class="dashboard-cards">
-        <div class="card">Berat Badan</div>
-        <div class="card">Kadar Lemak</div>
-        <div class="card">Kesehatan</div>
-        <div class="card">Keberhasilan Diet</div>
+        <!-- Berat Badan -->
+        <div class="card card-blue">
+          <div class="card-header">
+            <div class="card-icon"><i class="fa-solid fa-weight-scale"></i></div>
+            <div class="card-title">
+              <p>Berat Badan</p>
+              <h3>72.4 <span>kg</span></h3>
+            </div>
+          </div>
+          <p class="card-stat stat-down"><i class="fa-solid fa-arrow-down"></i> 1.3 kg <span>dari minggu lalu</span></p>
+        </div>
+
+        <!-- Kadar Lemak -->
+        <div class="card card-orange">
+          <div class="card-header">
+            <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
+            <div class="card-title">
+              <p>Kadar Lemak</p>
+              <h3>18.7 <span>%</span></h3>
+            </div>
+          </div>
+          <p class="card-stat stat-down"><i class="fa-solid fa-arrow-down"></i> 0.8% <span>dari minggu lalu</span></p>
+        </div>
+
+        <!-- Skor Kesehatan -->
+        <div class="card card-green">
+          <div class="card-header">
+            <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
+            <div class="card-title">
+              <p>Kesehatan</p>
+              <h3>85 <span>/100</span></h3>
+            </div>
+          </div>
+          <p class="card-stat stat-up"><i class="fa-solid fa-arrow-up"></i> 5 poin <span>dari minggu lalu</span></p>
+        </div>
+
+        <!-- Keberhasilan Diet -->
+        <div class="card card-purple">
+          <div class="card-header">
+            <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <div class="card-title">
+              <p>Keberhasilan Diet</p>
+              <h3>78 <span>%</span></h3>
+            </div>
+          </div>
+          <p class="card-stat stat-up"><i class="fa-solid fa-arrow-up"></i> 8% <span>dari minggu lalu</span></p>
+        </div>
       </section>
+
+      <!-- Area 4 Box Grafik (Untuk grafik asli nanti kita pakai Chart.js, sekarang buat box visualnya dulu) -->
+      <section class="charts-grid">
+        <div class="chart-box">
+          <h4>Berat Badan (kg)</h4>
+          <div class="dummy-chart-line blue-line"></div>
+        </div>
+        <div class="chart-box">
+          <h4>Kadar Lemak (%)</h4>
+          <div class="dummy-chart-line orange-line"></div>
+        </div>
+        <div class="chart-box">
+          <h4>Skor Kesehatan</h4>
+          <div class="dummy-chart-line green-line"></div>
+        </div>
+        <div class="chart-box">
+          <h4>Keberhasilan Diet (%)</h4>
+          <div class="dummy-chart-line purple-line"></div>
+        </div>
+      </section>
+
+      <!-- Quotes Motivasi Bawah -->
+      <footer class="motivation-quote">
+        <p><i class="fa-solid fa-quote-left"></i> Perubahan besar dimulai dari langkah kecil yang konsisten. <i class="fa-solid fa-quote-right"></i></p>
+      </footer>
     </main>
   </div>
-  <script src="renderer.js"></script>
 </body>
 </html>

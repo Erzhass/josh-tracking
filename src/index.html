@@ -21,14 +21,14 @@
       </div>
       
       <nav class="nav-menu">
-        <a href="#" class="nav-item active"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-calendar-day"></i> Form Harian</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-list-check"></i> Kesimpulan</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-chart-line"></i> Grafik & Statistik</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-bullseye"></i> Target</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i> Pengingat</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-gear"></i> Pengaturan</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a>
+        <a href="#" class="nav-item active" data-page="dashboard"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
+        <a href="#" class="nav-item" data-page="form"><i class="fa-solid fa-calendar-day"></i> Form Harian</a>
+        <a href="#" class="nav-item" data-page="kesimpulan"><i class="fa-solid fa-list-check"></i> Kesimpulan</a>
+        <a href="#" class="nav-item" data-page="generic"><i class="fa-solid fa-chart-line"></i> Grafik & Statistik</a>
+        <a href="#" class="nav-item" data-page="generic"><i class="fa-solid fa-bullseye"></i> Target</a>
+        <a href="#" class="nav-item" data-page="generic"><i class="fa-solid fa-bell"></i> Pengingat</a>
+        <a href="#" class="nav-item" data-page="generic"><i class="fa-solid fa-gear"></i> Pengaturan</a>
+        <a href="#" class="nav-item" data-page="generic"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a>
       </nav>
 
       <!-- Profil Bisa Diklik -->
@@ -40,106 +40,134 @@
           <span class="username" id="displayProfileName">Erzha Noverico</span>
           <span class="badge">Premium User</span>
         </div>
-        <i class="fa-regular fa-star star-icon"></i>
+        <i class="fa-regular fa-star star-icon" id="profileStar"></i>
       </div>
     </aside>
 
     <!-- Konten Utama -->
     <main class="main-content">
+      <!-- Header Atas (Global) -->
       <header class="content-header">
         <div>
-          <h1>Dashboard</h1>
-          <p class="subtitle">Ringkasan perkembangan diet Anda</p>
+          <h1 id="page-title">Dashboard</h1>
+          <p class="subtitle" id="page-subtitle">Ringkasan perkembangan diet Anda</p>
         </div>
         <div class="header-right">
-          <div class="dropdown-period">
-            <i class="fa-regular fa-calendar"></i> 7 Hari Terakhir <i class="fa-solid fa-chevron-down"></i>
+          <div class="dropdown-period" id="btn-period">
+            <i class="fa-regular fa-calendar"></i> <span id="selected-period">7 Hari Terakhir</span> <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <i class="fa-regular fa-bell icon-btn"></i>
-          <i class="fa-regular fa-window-minimize icon-btn"></i>
-          <i class="fa-regular fa-square icon-btn"></i>
-          <i class="fa-solid fa-xmark icon-btn"></i>
+          <i class="fa-regular fa-bell icon-btn" id="btn-noti"></i>
+          <i class="fa-regular fa-window-minimize icon-btn" id="btn-minimize"></i>
+          <i class="fa-regular fa-square icon-btn" id="btn-maximize"></i>
+          <i class="fa-solid fa-xmark icon-btn" id="btn-close-app"></i>
         </div>
       </header>
       
-      <!-- 4 Kartu Ringkasan Atas -->
-      <section class="dashboard-cards">
-        <div class="card card-blue">
-          <div class="card-header">
-            <div class="card-icon"><i class="fa-solid fa-weight-scale"></i></div>
-            <div class="card-title">
-              <p>Berat Badan</p>
-              <h3><span id="cardWeight">0</span> <span>kg</span></h3>
+      <!-- Halaman 1: Dashboard -->
+      <div id="page-dashboard" class="page-section active">
+        <!-- 4 Kartu Ringkasan Atas -->
+        <section class="dashboard-cards">
+          <div class="card card-blue">
+            <div class="card-header">
+              <div class="card-icon"><i class="fa-solid fa-weight-scale"></i></div>
+              <div class="card-title">
+                <p>Berat Badan</p>
+                <h3><span id="cardWeight">0</span> <span>kg</span></h3>
+              </div>
+            </div>
+            <p class="card-stat"><span>Belum ada data awal</span></p>
+          </div>
+
+          <div class="card card-orange">
+            <div class="card-header">
+              <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
+              <div class="card-title">
+                <p>Kadar Lemak</p>
+                <h3>0 <span>%</span></h3>
+              </div>
+            </div>
+            <p class="card-stat"><span>Belum ada data awal</span></p>
+          </div>
+
+          <div class="card card-green">
+            <div class="card-header">
+              <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
+              <div class="card-title">
+                <p>Kesehatan</p>
+                <h3>0 <span>/100</span></h3>
+              </div>
+            </div>
+            <p class="card-stat"><span>Belum ada data awal</span></p>
+          </div>
+
+          <div class="card card-purple">
+            <div class="card-header">
+              <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="card-title">
+                <p>Keberhasilan Diet</p>
+                <h3>0 <span>%</span></h3>
+              </div>
+            </div>
+            <p class="card-stat"><span>Belum ada data awal</span></p>
+          </div>
+        </section>
+
+        <!-- Area Grafik: Grid 2x2 Tanpa Scroll -->
+        <section class="charts-grid">
+          <div class="chart-box">
+            <h4>Berat Badan (kg)</h4>
+            <div class="chart-container">
+              <canvas id="weightChart"></canvas>
             </div>
           </div>
-          <p class="card-stat"><span>Belum ada data awal</span></p>
-        </div>
-
-        <div class="card card-orange">
-          <div class="card-header">
-            <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
-            <div class="card-title">
-              <p>Kadar Lemak</p>
-              <h3>0 <span>%</span></h3>
+          <div class="chart-box">
+            <h4>Kadar Lemak (%)</h4>
+            <div class="chart-container">
+              <canvas id="fatChart"></canvas>
             </div>
           </div>
-          <p class="card-stat"><span>Belum ada data awal</span></p>
-        </div>
-
-        <div class="card card-green">
-          <div class="card-header">
-            <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
-            <div class="card-title">
-              <p>Kesehatan</p>
-              <h3>0 <span>/100</span></h3>
+          <div class="chart-box">
+            <h4>Skor Kesehatan</h4>
+            <div class="chart-container">
+              <canvas id="healthChart"></canvas>
             </div>
           </div>
-          <p class="card-stat"><span>Belum ada data awal</span></p>
-        </div>
-
-        <div class="card card-purple">
-          <div class="card-header">
-            <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
-            <div class="card-title">
-              <p>Keberhasilan Diet</p>
-              <h3>0 <span>%</span></h3>
+          <div class="chart-box">
+            <h4>Keberhasilan Diet (%)</h4>
+            <div class="chart-container">
+              <canvas id="progressChart"></canvas>
             </div>
           </div>
-          <p class="card-stat"><span>Belum ada data awal</span></p>
-        </div>
-      </section>
+        </section>
 
-      <!-- Area Grafik: Grid 2x2 Tanpa Scroll -->
-      <section class="charts-grid">
-        <div class="chart-box">
-          <h4>Berat Badan (kg)</h4>
-          <div class="chart-container">
-            <canvas id="weightChart"></canvas>
-          </div>
-        </div>
-        <div class="chart-box">
-          <h4>Kadar Lemak (%)</h4>
-          <div class="chart-container">
-            <canvas id="fatChart"></canvas>
-          </div>
-        </div>
-        <div class="chart-box">
-          <h4>Skor Kesehatan</h4>
-          <div class="chart-container">
-            <canvas id="healthChart"></canvas>
-          </div>
-        </div>
-        <div class="chart-box">
-          <h4>Keberhasilan Diet (%)</h4>
-          <div class="chart-container">
-            <canvas id="progressChart"></canvas>
-          </div>
-        </div>
-      </section>
+        <footer class="motivation-quote">
+          <p><i class="fa-solid fa-quote-left"></i> Perubahan besar dimulai dari langkah kecil yang konsisten. <i class="fa-solid fa-quote-right"></i></p>
+        </footer>
+      </div>
 
-      <footer class="motivation-quote">
-        <p><i class="fa-solid fa-quote-left"></i> Perubahan besar dimulai dari langkah kecil yang konsisten. <i class="fa-solid fa-quote-right"></i></p>
-      </footer>
+      <!-- Halaman 2: Form Harian Placeholder -->
+      <div id="page-form" class="page-section">
+        <div class="placeholder-content">
+          <i class="fa-solid fa-calendar-day"></i>
+          <p>Halaman Form Harian sedang disiapkan.</p>
+        </div>
+      </div>
+
+      <!-- Halaman 3: Kesimpulan Placeholder -->
+      <div id="page-kesimpulan" class="page-section">
+        <div class="placeholder-content">
+          <i class="fa-solid fa-list-check"></i>
+          <p>Halaman Kesimpulan sedang disiapkan.</p>
+        </div>
+      </div>
+
+      <!-- Halaman Lainnya Placeholder -->
+      <div id="page-generic" class="page-section">
+        <div class="placeholder-content">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <p>Fitur ini akan segera hadir.</p>
+        </div>
+      </div>
     </main>
   </div>
 

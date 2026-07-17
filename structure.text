@@ -1,0 +1,9 @@
+josh-tracking/
+├── src/
+│   ├── main.js          (Main Process Electron)
+│   ├── preload.js       (Jembatan aman antara Node.js dan UI)
+│   ├── renderer.js      (Logika interaksi UI / JavaScript)
+│   ├── index.html       (Struktur HTML Utama)
+│   └── styles.css       (Styling tampilan / CSS)
+├── package.json         (Konfigurasi project & dependencies)
+└── index.html           (File index yang sudah kamu buat sebelumnya)

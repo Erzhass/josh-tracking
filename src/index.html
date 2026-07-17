@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JOSH - Your Diet. Your Progress.</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Kiri -->
+    <aside class="sidebar">
+      <div class="logo-section">
+        <h2>JOSH</h2>
+        <p>Your Diet. Your Progress.</p>
+      </div>
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">Form Harian</a>
+        <a href="#" class="nav-item">Kesimpulan</a>
+        <a href="#" class="nav-item">Grafik & Statistik</a>
+        <a href="#" class="nav-item">Target</a>
+        <a href="#" class="nav-item">Pengingat</a>
+        <a href="#" class="nav-item">Pengaturan</a>
+        <a href="#" class="nav-item">Tentang Aplikasi</a>
+      </nav>
+      <div class="user-profile">
+        <div class="avatar"></div>
+        <div class="user-info">
+          <span class="username">Erzha Noverico</span>
+          <span class="badge">Premium User</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Konten Utama Halaman -->
+    <main class="main-content">
+      <header class="content-header">
+        <h1>Dashboard</h1>
+        <p>Ringkasan perkembangan diet Anda</p>
+      </header>
+      
+      <!-- Slot Konten Halaman akan ditaruh di sini -->
+      <section class="dashboard-cards">
+        <div class="card">Berat Badan</div>
+        <div class="card">Kadar Lemak</div>
+        <div class="card">Kesehatan</div>
+        <div class="card">Keberhasilan Diet</div>
+      </section>
+    </main>
+  </div>
+  <script src="renderer.js"></script>
+</body>
+</html>

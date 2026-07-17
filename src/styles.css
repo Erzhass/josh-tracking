@@ -250,8 +250,8 @@ body {
 .card-green .card-icon { background-color: rgba(63, 185, 80, 0.15); color: #3fb950; }
 .card-purple .card-icon { background-color: rgba(137, 87, 229, 0.15); color: #8957e5; }
 
-.stat-down { color: #3fb950; } /* Turun berat badan/lemak itu bagus (hijau) */
-.stat-up { color: #3fb950; }   /* Naik skor kesehatan/progres itu bagus (hijau) */
+.stat-down { color: #3fb950; } 
+.stat-up { color: #3fb950; }   
 
 /* CHARTS GRID */
 .charts-grid {
@@ -264,11 +264,11 @@ body {
   background-color: #121824;
   border: 1px solid #1f2631;
   border-radius: 16px;
-  padding: 20px;
-  min-height: 200px;
+  padding: 16px;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
 }
 
 .chart-box h4 {
@@ -277,29 +277,12 @@ body {
   color: #8b949e;
 }
 
-.dummy-chart-line {
-  height: 100px;
-  width: 100%;
-  border-bottom: 2px solid #1f2631;
+.chart-container {
   position: relative;
-  overflow: hidden;
-}
-
-/* Efek placeholder garis meliuk tipis */
-.dummy-chart-line::after {
-  content: '';
-  position: absolute;
-  bottom: 20px;
-  left: 0;
+  flex-grow: 1;
   width: 100%;
-  height: 4px;
-  border-radius: 4px;
+  height: 140px;
 }
-
-.blue-line::after { background-color: #388bfd; box-shadow: 0 0 10px rgba(56,139,253,0.5); }
-.orange-line::after { background-color: #f0883e; box-shadow: 0 0 10px rgba(240,136,62,0.5); }
-.green-line::after { background-color: #3fb950; box-shadow: 0 0 10px rgba(63,185,80,0.5); }
-.purple-line::after { background-color: #8957e5; box-shadow: 0 0 10px rgba(137,87,229,0.5); }
 
 /* MOTIVATION FOOTER */
 .motivation-quote {

@@ -303,12 +303,14 @@ document.getElementById('btn-save-reminder').addEventListener('click', () => {
 document.getElementById('btn-save-settings').addEventListener('click', () => {
   const unit = document.getElementById('setting-unit-select').value;
   const tema = document.getElementById('setting-theme-select').value;
+  
+  // LOGIKA RESPONS TEMA INDUK GLOBAL
   if(tema === 'amoled') {
-    document.body.style.backgroundColor = '#000000';
+    document.body.classList.add('amoled-theme');
   } else {
-    document.body.style.backgroundColor = '#0b0f17';
+    document.body.classList.remove('amoled-theme');
   }
-  alert(`Pengaturan sistem berhasil diterapkan: Satuan (${unit.toUpperCase()}), Tema (${tema === 'dark' ? 'Dark' : 'AMOLED'}).`);
+  alert(`Pengaturan sistem berhasil diterapkan: Satuan (${unit.toUpperCase()}), Tema (${tema === 'dark' ? 'Dark Slate' : 'AMOLED Deep Black'}).`);
 });
 
 // --- ELECTRON INTER-PROCESS WINDOWS MANAGEMENT ---

@@ -21,7 +21,12 @@ const getLabels = () => {
   if (databaseLokal.length === 0) return ['Belum Ada Data'];
   return databaseLokal.map(d => {
     const parts = d.tanggal.split(' ');
-    const bulan = parts[1] === 'Juli' ? '07' : (parts[1] === 'Agustus' ? '08' : '09');
+    const listBulanAngka = {
+      'Januari': '01', 'Februari': '02', 'Maret': '03', 'April': '04',
+      'Mei': '05', 'Juni': '06', 'Juli': '07', 'Agustus': '08',
+      'September': '09', 'Oktober': '10', 'November': '11', 'Desember': '12'
+    };
+    const bulan = listBulanAngka[parts[1]] || '01';
     return parts[0] + '/' + bulan;
   }).reverse();
 };
@@ -122,31 +127,32 @@ function renderAplikasi() {
 
   // Render Tabel Kesimpulan
   const tbody = document.getElementById('table-history-body');
-  tbody.innerHTML = '';
-  
-  if (databaseLokal.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8b949e; padding: 20px;">Belum ada data laporan harian. Silakan isi form terlebih dahulu.</td></tr>`;
-    document.getElementById('pagination-count-text').textContent = `0 - 0 dari 0 data`;
-  } else {
-    databaseLokal.forEach((data, index) => {
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${data.tanggal}</td>
-        <td>${data.makan}</td>
-        <td>${data.bangun}</td>
-        <td>${data.tidur}</td>
-        <td>${data.olahraga}</td>
-        <td>${data.berat}</td>
-        <td><span class="badge-status ${data.perubahan === 'Turun' ? 'badge-down' : 'badge-up'}">${data.perubahan}</span></td>
-        <td>
-          <div class="action-buttons">
-            <button class="action-btn-row" onclick="hapusBarisData(${index})"><i class="fa-solid fa-trash action-btn-delete"></i></button>
-          </div>
-        </td>
-      `;
-      tbody.appendChild(tr);
-    });
-    document.getElementById('pagination-count-text').textContent = `1 - ${databaseLokal.length} dari ${databaseLokal.length} data`;
+  if (tbody) {
+    tbody.innerHTML = '';
+    if (databaseLokal.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:#8b949e; padding: 20px;">Belum ada data laporan harian. Silakan isi form terlebih dahulu.</td></tr>`;
+      document.getElementById('pagination-count-text').textContent = `0 - 0 dari 0 data`;
+    } else {
+      databaseLokal.forEach((data, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${data.tanggal}</td>
+          <td>${data.makan} x</td>
+          <td>${data.bangun}</td>
+          <td>${data.tidur}</td>
+          <td>${data.olahraga}</td>
+          <td>${data.berat} kg</td>
+          <td><span class="badge-status ${data.perubahan === 'Turun' ? 'badge-down' : 'badge-up'}">${data.perubahan}</span></td>
+          <td>
+            <div class="action-buttons">
+              <button class="action-btn-row" onclick="hapusBarisData(${index})"><i class="fa-solid fa-trash action-btn-delete"></i></button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('pagination-count-text').textContent = `1 - ${databaseLokal.length} dari ${databaseLokal.length} data`;
+    }
   }
 
   // Sinkronisasi grafik koordinat
@@ -268,23 +274,21 @@ navItems.forEach(item => {
     if (activeSec) activeSec.classList.add('active');
 
     const meta = pageMetaData[target];
-    pageTitle.textContent = meta.title;
-    pageSubtitle.textContent = meta.subtitle;
+    if (meta) {
+      pageTitle.textContent = meta.title;
+      pageSubtitle.textContent = meta.subtitle;
+    }
   });
 });
 
-document.getElementById('btn-shortcut-to-form').addEventListener('click', () => {
-  document.querySelector('[data-page="form"]').click();
-});
+const shortcutBtn = document.getElementById('btn-shortcut-to-form');
+if(shortcutBtn) {
+  shortcutBtn.addEventListener('click', () => {
+    document.querySelector('[data-page="form"]').click();
+  });
+}
 
 // --- EVENT CONTROLLER MENU TARGET, ALARM & SETTING ---
-document.getElementById('btn-save-targets').addEventListener('click', () => {
-  targetBerat = parseFloat(document.getElementById('target-weight-input').value) || 0;
-  targetLemak = parseFloat(document.getElementById('target-fat-input').value) || 0;
-  renderAplikasi();
-  alert('Target kebugaran JOSH berhasil diperbarui!');
-});
-
 document.getElementById('reminder-on').addEventListener('click', function() {
   statusReminder = true; this.classList.add('active'); document.getElementById('reminder-off').classList.remove('active');
 });
@@ -313,15 +317,30 @@ document.getElementById('btn-minimize').addEventListener('click', () => ipcRende
 document.getElementById('btn-maximize').addEventListener('click', () => ipcRenderer.send('window-maximize'));
 document.getElementById('btn-close-app').addEventListener('click', () => { if(confirm('Keluar dari aplikasi?')) ipcRenderer.send('window-close'); });
 
-// MODAL DATA DIRI CONTROLLER
+// --- MODAL DATA DIRI & TARGET INTEGRATED CONTROLLER ---
 const profileBtn = document.getElementById('profileBtn');
 const profileModal = document.getElementById('profileModal');
 profileBtn.addEventListener('click', () => profileModal.classList.add('active'));
 document.getElementById('closeModalBtn').addEventListener('click', () => profileModal.classList.remove('active'));
+
 document.getElementById('saveModalBtn').addEventListener('click', () => {
   const name = document.getElementById('inputName').value.trim();
-  if(name) document.getElementById('displayProfileName').textContent = name;
+  const inputTargetBerat = parseFloat(document.getElementById('inputTargetWeight').value) || 0;
+  const inputTargetLemak = parseFloat(document.getElementById('inputTargetFat').value) || 0;
+
+  if(name) {
+    document.getElementById('displayProfileName').textContent = name;
+  }
+  
+  // Set target dari modal data diri global
+  targetBerat = inputTargetBerat;
+  targetLemak = inputTargetLemak;
+  
+  // Jalankan render ulang agar data target baru langsung terhitung secara real-time
+  renderAplikasi();
+  
   profileModal.classList.remove('active');
+  alert('Profil & Target Kebugaran berhasil disinkronkan!');
 });
 
 document.getElementById('profileStar').addEventListener('click', function(e) {
@@ -330,5 +349,5 @@ document.getElementById('profileStar').addEventListener('click', function(e) {
   this.style.color = this.classList.contains('fa-solid') ? '#f1e05a' : '#8b949e';
 });
 
-// Jalankan rendering aplikasi pada pemuatan pertama
+// Jalankan rendering aplikasi pada pemuatan pertama (Kondisi Kosong)
 renderAplikasi();

@@ -4,77 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JOSH - Your Diet. Your Progress.</title>
-  <link rel="stylesheet" href="styles.css">
+  <!-- FontAwesome untuk Icon -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- CSS Internal/External -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <div class="app-container">
-    <!-- Sidebar Kiri -->
+    
+    <!-- SIDEBAR UTAMA -->
     <aside class="sidebar">
       <div class="logo-section">
         <i class="fa-solid fa-heart-pulse logo-icon"></i>
         <div>
           <h2>JOSH</h2>
-          <p>Your Diet. Your Progress.</p>
+          <p>Diet & Progress Tracker</p>
         </div>
       </div>
-      
+
       <nav class="nav-menu">
-        <a href="#" class="nav-item active" data-page="dashboard"><i class="fa-solid fa-chart-simple"></i> Dashboard</a>
-        <a href="#" class="nav-item" data-page="form"><i class="fa-solid fa-calendar-day"></i> Form Harian</a>
-        <a href="#" class="nav-item" data-page="kesimpulan"><i class="fa-solid fa-list-check"></i> Kesimpulan</a>
-        <a href="#" class="nav-item" data-page="statistik"><i class="fa-solid fa-chart-line"></i> Grafik & Statistik</a>
-        <a href="#" class="nav-item" data-page="target"><i class="fa-solid fa-bullseye"></i> Target</a>
-        <a href="#" class="nav-item" data-page="pengingat"><i class="fa-solid fa-bell"></i> Pengingat</a>
-        <a href="#" class="nav-item" data-page="pengaturan"><i class="fa-solid fa-gear"></i> Pengaturan</a>
-        <a href="#" class="nav-item" data-page="tentang"><i class="fa-solid fa-circle-info"></i> Tentang Aplikasi</a>
+        <a href="#" class="nav-item active" data-page="dashboard">
+          <i class="fa-solid fa-chart-pie"></i> Dashboard
+        </a>
+        <a href="#" class="nav-item" data-page="form">
+          <i class="fa-solid fa-pen-to-square"></i> Form Harian
+        </a>
+        <a href="#" class="nav-item" data-page="kesimpulan">
+          <i class="fa-solid fa-list-check"></i> Kesimpulan
+        </a>
+        <a href="#" class="nav-item" data-page="statistik">
+          <i class="fa-solid fa-chart-line"></i> Grafik & Statistik
+        </a>
+        <a href="#" class="nav-item" data-page="target">
+          <i class="fa-solid fa-bullseye"></i> Target
+        </a>
+        <a href="#" class="nav-item" data-page="pengingat">
+          <i class="fa-solid fa-bell"></i> Pengingat
+        </a>
+        <a href="#" class="nav-item" data-page="pengaturan">
+          <i class="fa-solid fa-gear"></i> Pengaturan
+        </a>
+        <a href="#" class="nav-item" data-page="tentang">
+          <i class="fa-solid fa-circle-info"></i> Tentang Aplikasi
+        </a>
       </nav>
 
-      <!-- Profil Komponen -->
+      <!-- PROFIL PENGGUNA (Bisa Diklik Untuk Membuka Modal) -->
       <div class="user-profile" id="profileBtn">
         <div class="avatar">
           <i class="fa-solid fa-user"></i>
         </div>
         <div class="user-info">
-          <span class="username" id="displayProfileName">Erzha Noverico</span>
-          <span class="badge">Premium User</span>
+          <span class="username" id="displayProfileName">Pengguna Baru</span>
+          <span class="badge"><i class="fa-solid fa-star" id="profileStar"></i> Premium</span>
         </div>
-        <i class="fa-regular fa-star star-icon" id="profileStar"></i>
       </div>
     </aside>
 
-    <!-- Konten Utama -->
+    <!-- KONTEN UTAMA -->
     <main class="main-content">
-      <!-- Header Jendela -->
+      
+      <!-- HEADER APLIKASI DAN KONTROL JENDELA -->
       <header class="content-header">
         <div>
           <h1 id="page-title">Dashboard</h1>
           <p class="subtitle" id="page-subtitle">Ringkasan perkembangan diet Anda</p>
         </div>
         <div class="header-right">
-          <div class="dropdown-period" id="btn-period">
-            <i class="fa-regular fa-calendar"></i> <span id="selected-period">7 Hari Terakhir</span> <i class="fa-solid fa-chevron-down"></i>
+          <div class="dropdown-period">
+            <i class="fa-regular fa-calendar"></i>
+            <span>30 Hari Terakhir</span>
+            <i class="fa-solid fa-chevron-down"></i>
           </div>
-          <i class="fa-regular fa-bell icon-btn" id="btn-noti"></i>
-          <i class="fa-regular fa-window-minimize icon-btn" id="btn-minimize"></i>
-          <i class="fa-regular fa-square icon-btn" id="btn-maximize"></i>
-          <i class="fa-solid fa-xmark icon-btn" id="btn-close-app"></i>
+          <!-- Tombol Manajemen Windows Electron -->
+          <i class="fa-solid fa-minus icon-btn" id="btn-minimize" title="Minimize"></i>
+          <i class="fa-solid fa-expand icon-btn" id="btn-maximize" title="Maximize"></i>
+          <i class="fa-solid fa-xmark icon-btn" id="btn-close-app" title="Close" style="color: #f85149;"></i>
         </div>
       </header>
-      
-      <!-- Halaman 1: Dashboard -->
-      <div id="page-dashboard" class="page-section active">
-        <section class="dashboard-cards">
+
+      <!-- ================= PAGE: DASHBOARD ================= -->
+      <section id="page-dashboard" class="page-section active">
+        <!-- 4 Kotak Ringkasan Utama -->
+        <div class="dashboard-cards">
           <div class="card card-blue">
             <div class="card-header">
               <div class="card-icon"><i class="fa-solid fa-weight-scale"></i></div>
               <div class="card-title">
-                <p>Berat Badan</p>
-                <h3><span id="cardWeight">72.4</span> <span>kg</span></h3>
+                <p>Berat Terbaru</p>
+                <h3><span id="cardWeight">0</span> <span>kg</span></h3>
               </div>
             </div>
-            <p class="card-stat" id="statWeight"><i class="fa-solid fa-arrow-down"></i> 1.3 kg dari minggu lalu</p>
+            <span class="card-stat"><i class="fa-solid fa-arrow-trend-down"></i> Data Real-Time</span>
           </div>
 
           <div class="card card-orange">
@@ -82,176 +106,171 @@
               <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
               <div class="card-title">
                 <p>Kadar Lemak</p>
-                <h3><span id="cardFat">18.7</span> <span>%</span></h3>
+                <h3><span id="cardFat">0</span> <span>%</span></h3>
               </div>
             </div>
-            <p class="card-stat" id="statFat"><i class="fa-solid fa-arrow-down"></i> 0.8 % dari minggu lalu</p>
+            <span class="card-stat"><i class="fa-solid fa-fire"></i> Estimasi Kalkulasi</span>
           </div>
 
           <div class="card card-green">
             <div class="card-header">
               <div class="card-icon"><i class="fa-solid fa-heart"></i></div>
               <div class="card-title">
-                <p>Kesehatan</p>
-                <h3><span id="cardHealth">85</span> <span>/100</span></h3>
+                <p>Skor Kesehatan</p>
+                <h3><span id="cardHealth">0</span> <span>pts</span></h3>
               </div>
             </div>
-            <p class="card-stat" id="statHealth"><i class="fa-solid fa-arrow-up"></i> 5 poin dari minggu lalu</p>
+            <span class="card-stat"><i class="fa-solid fa-shield-heart"></i> Kondisi Fisik</span>
           </div>
 
           <div class="card card-purple">
             <div class="card-header">
-              <div class="card-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <div class="card-icon"><i class="fa-solid fa-list-check"></i></div>
               <div class="card-title">
-                <p>Keberhasilan Diet</p>
-                <h3><span id="cardProgress">78</span> <span>%</span></h3>
+                <p>Kepatuhan Diet</p>
+                <h3><span id="cardProgress">0</span> <span>%</span></h3>
               </div>
             </div>
-            <p class="card-stat" id="statProgress"><i class="fa-solid fa-arrow-up"></i> 8 % dari minggu lalu</p>
+            <span class="card-stat"><i class="fa-solid fa-circle-check"></i> Target Tracker</span>
           </div>
-        </section>
+        </div>
 
-        <!-- Grafik Perkembangan -->
-        <section class="charts-grid">
+        <!-- Kisi Diagram Grafik Mini -->
+        <div class="charts-grid">
           <div class="chart-box">
-            <h4>Berat Badan (kg)</h4>
+            <h4>Tren Berat Badan (kg)</h4>
             <div class="chart-container">
               <canvas id="weightChart"></canvas>
             </div>
           </div>
           <div class="chart-box">
-            <h4>Kadar Lemak (%)</h4>
+            <h4>Tren Kadar Lemak (%)</h4>
             <div class="chart-container">
               <canvas id="fatChart"></canvas>
             </div>
           </div>
           <div class="chart-box">
-            <h4>Skor Kesehatan</h4>
+            <h4>Grafik Kesehatan Harian</h4>
             <div class="chart-container">
               <canvas id="healthChart"></canvas>
             </div>
           </div>
           <div class="chart-box">
-            <h4>Keberhasilan Diet (%)</h4>
+            <h4>Persentase Progress Diet</h4>
             <div class="chart-container">
               <canvas id="progressChart"></canvas>
             </div>
           </div>
-        </section>
+        </div>
 
-        <footer class="motivation-quote">
-          <p><i class="fa-solid fa-quote-left"></i> Perubahan besar dimulai dari langkah kecil yang konsisten. <i class="fa-solid fa-quote-right"></i></p>
-        </footer>
-      </div>
+        <div class="motivation-quote">
+          "Disiplin adalah jembatan antara cita-cita dan pencapaian. Mulai isi form harian untuk memantau progress Anda hari ini!"
+        </div>
+      </section>
 
-      <!-- Halaman 2: Form Harian -->
-      <div id="page-form" class="page-section">
+      <!-- ================= PAGE: FORM HARIAN ================= -->
+      <section id="page-form" class="page-section">
         <div class="form-container-grid">
+          
+          <!-- Kolom 1: Parameter Utama -->
           <div class="form-column">
-            <!-- Box Makanan -->
-            <div class="form-card">
-              <h3><i class="fa-solid fa-utensils"></i> Makanan</h3>
+            <div class="form-card full-height-card">
+              <h3><i class="fa-solid fa-weight-scale" style="color: #388bfd;"></i> Data Fisik Hari Ini</h3>
               <div class="input-group">
-                <label>Jumlah Makan</label>
+                <label for="input-hari-weight">Berat Badan Saat Ini (kg)</label>
+                <input type="number" id="input-hari-weight" placeholder="Contoh: 65.5" step="0.1">
+              </div>
+              <div class="input-group">
+                <label>Perubahan Dibanding Kemarin</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="weight-change" value="Turun" checked>
+                    <div class="custom-radio radio-down"><i class="fa-solid fa-arrow-down"></i> Turun</div>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="weight-change" value="Naik">
+                    <div class="custom-radio radio-up"><i class="fa-solid fa-arrow-up"></i> Naik</div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Kolom 2: Pola Makan & Tidur -->
+          <div class="form-column">
+            <div class="form-card full-height-card">
+              <h3><i class="fa-solid fa-utensils" style="color: #f0883e;"></i> Nutrisi & Istirahat</h3>
+              <div class="input-group">
+                <label>Frekuensi Makan Hari Ini</label>
                 <div class="counter-input">
                   <button type="button" id="btn-makan-min">-</button>
-                  <input type="number" id="input-makan-count" value="3" readonly>
+                  <input type="text" id="input-makan-count" value="3" readonly>
                   <button type="button" id="btn-makan-plus">+</button>
                 </div>
               </div>
               <div class="input-group">
-                <label>Catatan Makanan (opsional)</label>
-                <textarea id="input-makan-note" placeholder="Contoh: Sarapan oatmeal, makan siang ayam..."></textarea>
-              </div>
-            </div>
-
-            <!-- Box Berat Badan -->
-            <div class="form-card">
-              <h3><i class="fa-solid fa-weight-scale"></i> Berat Badan</h3>
-              <div class="input-group">
-                <label>Berat Hari Ini (kg)</label>
-                <input type="number" id="input-hari-weight" placeholder="72.4" step="0.1">
+                <label for="input-time-wake">Jam Bangun Tidur</label>
+                <input type="time" id="input-time-wake" value="05:00">
               </div>
               <div class="input-group">
-                <label>Perubahan</label>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="weight-change" value="Turun" checked>
-                    <span class="custom-radio radio-down"><i class="fa-solid fa-circle"></i> Turun</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="weight-change" value="Naik">
-                    <span class="custom-radio radio-up"><i class="fa-solid fa-circle"></i> Naik</span>
-                  </label>
-                </div>
+                <label for="input-time-sleep">Jam Tidur Malam</label>
+                <input type="time" id="input-time-sleep" value="22:00">
               </div>
             </div>
           </div>
 
+          <!-- Kolom 3: Aktivitas Olahraga -->
           <div class="form-column">
-            <!-- Box Tidur & Bangun -->
-            <div class="form-card">
-              <h3><i class="fa-solid fa-moon"></i> Tidur & Bangun</h3>
-              <div class="input-group">
-                <label>Jam Bangun</label>
-                <input type="time" id="input-time-wake" value="05:30">
-              </div>
-              <div class="input-group">
-                <label>Jam Tidur</label>
-                <input type="time" id="input-time-sleep" value="22:30">
-              </div>
-            </div>
-
-            <!-- Box Catatan Tambahan -->
-            <div class="form-card">
-              <h3><i class="fa-solid fa-note-sticky"></i> Catatan Tambahan</h3>
-              <div class="input-group">
-                <label>Catatan tambahan (opsional)</label>
-                <textarea id="input-extra-note" placeholder="Merasa cukup baik hari ini, energi lumayan."></textarea>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-column">
-            <!-- Box Olahraga -->
             <div class="form-card full-height-card">
-              <h3><i class="fa-solid fa-person-running"></i> Olahraga</h3>
+              <h3><i class="fa-solid fa-dumbbell" style="color: #3fb950;"></i> Aktivitas Fisik</h3>
               <div class="input-group">
-                <label>Apakah berolahraga?</label>
+                <label>Apakah Melakukan Olahraga?</label>
                 <div class="toggle-group">
                   <button type="button" class="toggle-btn active" id="sport-yes">Ya</button>
                   <button type="button" class="toggle-btn" id="sport-no">Tidak</button>
                 </div>
               </div>
+              
               <div id="sport-details-fields">
-                <div class="input-group">
-                  <label>Jenis Olahraga</label>
+                <div class="input-group" style="margin-top: 12px;">
+                  <label for="input-sport-type">Jenis Olahraga</label>
                   <select id="input-sport-type">
-                    <option value="Fitness">Fitness</option>
-                    <option value="Lari">Lari</option>
-                    <option value="Bersepeda">Bersepeda</option>
-                    <option value="Berenang">Berenang</option>
+                    <option value="Cardio/Running">Cardio / Lari</option>
+                    <option value="Angkat Beban">Angkat Beban (Gym)</option>
+                    <option value="Calisthenics">Kalistenik / Home Workout</option>
+                    <option value="Berenang/Sepeda">Berenang / Bersepeda</option>
                   </select>
                 </div>
-                <div class="input-group">
-                  <label>Durasi</label>
-                  <input type="text" id="input-sport-duration" value="45 menit">
+                <div class="input-group" style="margin-top: 12px;">
+                  <label for="input-sport-duration">Durasi Olahraga</label>
+                  <select id="input-sport-duration">
+                    <option value="15 Menit">15 Menit</option>
+                    <option value="30 Menit" selected>30 Menit</option>
+                    <option value="45 Menit">45 Menit</option>
+                    <option value="60+ Menit">Lebih dari 1 Jam</option>
+                  </select>
                 </div>
               </div>
+
+              <button type="button" class="btn-submit-form" id="btn-save-daily-report" style="margin-top: auto;">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Simpan Laporan Harian
+              </button>
             </div>
           </div>
-        </div>
-        <button type="button" class="btn-submit-form" id="btn-save-daily-report">Simpan Laporan Harian</button>
-      </div>
 
-      <!-- Halaman 3: Kesimpulan -->
-      <div id="page-kesimpulan" class="page-section">
+        </div>
+      </section>
+
+      <!-- ================= PAGE: KESIMPULAN (TABEL RIWAYAT) ================= -->
+      <section id="page-kesimpulan" class="page-section">
         <div class="table-controls">
           <div class="search-box-container">
             <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="search-table-date" placeholder="Cari tanggal...">
+            <input type="text" placeholder="Cari riwayat tanggal laporan...">
           </div>
-          <button class="btn-add-shortcut" id="btn-shortcut-to-form"><i class="fa-solid fa-plus"></i> Tambah / Form Harian</button>
+          <button class="btn-add-shortcut" id="btn-shortcut-to-form">
+            <i class="fa-solid fa-plus"></i> Tambah Log Baru
+          </button>
         </div>
 
         <div class="table-wrapper">
@@ -259,183 +278,180 @@
             <thead>
               <tr>
                 <th>Tanggal</th>
-                <th>Makan (x)</th>
+                <th>Makan</th>
                 <th>Bangun</th>
                 <th>Tidur</th>
                 <th>Olahraga</th>
-                <th>Berat (kg)</th>
-                <th>Perubahan</th>
+                <th>Berat</th>
+                <th>Status</th>
                 <th>Aksi</th>
               </tr>
             </thead>
-            <tbody id="table-history-body"></tbody>
+            <tbody id="table-history-body">
+              <!-- Baris data di-generate dinamis via JavaScript -->
+            </tbody>
           </table>
         </div>
 
-        <!-- Pagination -->
         <div class="table-pagination">
-          <div class="pagination-info">Menampilkan <span id="pagination-count-text">1 - 7 dari 7 data</span></div>
+          <span id="pagination-count-text">0 - 0 dari 0 data</span>
           <div class="pagination-buttons">
-            <button class="page-nav-btn"><i class="fa-solid fa-angles-left"></i></button>
-            <button class="page-nav-btn"><i class="fa-solid fa-angle-left"></i></button>
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-left"></i></button>
             <button class="page-num-btn active">1</button>
-            <button class="page-nav-btn"><i class="fa-solid fa-angle-right"></i></button>
+            <button class="page-nav-btn"><i class="fa-solid fa-chevron-right"></i></button>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Halaman 4: Grafik & Statistik -->
-      <div id="page-statistik" class="page-section">
-        <div class="form-container-grid">
-          <div class="form-card" style="grid-column: span 2; height: 320px;">
-            <h3><i class="fa-solid fa-chart-area"></i> Tren Berat vs Kadar Lemak</h3>
-            <div class="chart-container">
-              <canvas id="analyticsComboChart"></canvas>
-            </div>
+      <!-- ================= PAGE: GRAFIK & STATISTIK ADVANCED ================= -->
+      <section id="page-statistik" class="page-section">
+        <div class="dashboard-cards" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="card">
+            <p style="font-size: 12px; color: #8b949e;">Rata-rata Berat</p>
+            <h3 id="stats-avg-weight" style="font-size: 22px; font-weight: 700;">0 kg</h3>
           </div>
-          <div class="form-card">
-            <h3><i class="fa-solid fa-calculator"></i> Ringkasan Analisis</h3>
-            <div class="input-group" style="margin-top: 10px;">
-              <label>Rata-rata Berat Badan</label>
-              <h2 style="color: #388bfd;" id="stats-avg-weight">72.8 kg</h2>
-            </div>
-            <div class="input-group">
-              <label>Total Sesi Olahraga</label>
-              <h2 style="color: #3fb950;" id="stats-total-sports">5 Sesi</h2>
-            </div>
-            <div class="input-group">
-              <label>Kepatuhan Diet JOSH</label>
-              <h2 style="color: #8957e5;" id="stats-diet-compliance">75.4%</h2>
-            </div>
+          <div class="card">
+            <p style="font-size: 12px; color: #8b949e;">Total Sesi Olahraga</p>
+            <h3 id="stats-total-sports" style="font-size: 22px; font-weight: 700;">0 Sesi</h3>
+          </div>
+          <div class="card">
+            <p style="font-size: 12px; color: #8b949e;">Konsistensi Diet</p>
+            <h3 id="stats-diet-compliance" style="font-size: 22px; font-weight: 700;">0%</h3>
           </div>
         </div>
-      </div>
-
-      <!-- Halaman 5: Target -->
-      <div id="page-target" class="page-section">
-        <div class="form-container-grid">
-          <div class="form-card">
-            <h3><i class="fa-solid fa-bullseye"></i> Atur Target Saat Ini</h3>
-            <div class="input-group">
-              <label>Target Berat Badan (kg)</label>
-              <input type="number" id="target-weight-input" value="68.0" step="0.1">
-            </div>
-            <div class="input-group">
-              <label>Target Kadar Lemak (%)</label>
-              <input type="number" id="target-fat-input" value="15.0" step="0.1">
-            </div>
-            <button class="btn-submit-form" style="margin-top: 10px;" id="btn-save-targets">Perbarui Target</button>
-          </div>
-          <div class="form-card" style="grid-column: span 2;">
-            <h3><i class="fa-solid fa-bars-progress"></i> Progres Target</h3>
-            <div class="input-group" style="margin-top: 15px;">
-              <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                <span>Progres Menuju Berat Target (68 kg)</span>
-                <span id="progress-weight-label">65%</span>
-              </div>
-              <div style="width: 100%; background: #161b24; border-radius: 8px; height: 16px; overflow: hidden; margin-top: 6px;">
-                <div id="progress-weight-bar" style="background: #388bfd; width: 65%; height: 100%; transition: width 0.3s;"></div>
-              </div>
-            </div>
-            <div class="input-group" style="margin-top: 15px;">
-              <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                <span>Progres Kadar Lemak (15%)</span>
-                <span id="progress-fat-label">40%</span>
-              </div>
-              <div style="width: 100%; background: #161b24; border-radius: 8px; height: 16px; overflow: hidden; margin-top: 6px;">
-                <div id="progress-fat-bar" style="background: #f0883e; width: 40%; height: 100%; transition: width 0.3s;"></div>
-              </div>
-            </div>
+        <div class="chart-box" style="flex-grow: 1; min-height: 300px;">
+          <h4>Analisis Komparasi Berat vs Kadar Lemak (Kombinasi Batang & Garis)</h4>
+          <div class="chart-container">
+            <canvas id="analyticsComboChart"></canvas>
           </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Halaman 6: Pengingat -->
-      <div id="page-pengingat" class="page-section">
-        <div class="form-container-grid">
-          <div class="form-card">
-            <h3><i class="fa-solid fa-bell"></i> Alarm Laporan Harian</h3>
-            <div class="input-group">
-              <label>Jam Pengingat Laporan</label>
-              <input type="time" id="reminder-time-input" value="21:00">
+      <!-- ================= PAGE: TARGET MANAGEMENT ================= -->
+      <section id="page-target" class="page-section">
+        <div class="form-card" style="max-width: 500px;">
+          <h3><i class="fa-solid fa-crosshairs" style="color: #8957e5;"></i> Progres Target Real-Time</h3>
+          
+          <div style="margin-top: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+              <span>Capaian Target Berat</span>
+              <span id="progress-weight-label" style="font-weight: 600; color: #388bfd;">0%</span>
             </div>
-            <div class="input-group">
-              <label>Status</label>
-              <div class="toggle-group">
-                <button type="button" class="toggle-btn active" id="reminder-on">Aktif</button>
-                <button type="button" class="toggle-btn" id="reminder-off">Mati</button>
-              </div>
+            <div style="background-color: #1f2631; height: 10px; border-radius: 5px; overflow: hidden;">
+              <div id="progress-weight-bar" style="background-color: #388bfd; width: 0%; height: 100%; transition: width 0.4s ease;"></div>
             </div>
-            <button class="btn-submit-form" style="margin-top: 10px;" id="btn-save-reminder">Simpan Pengingat</button>
           </div>
-          <div class="form-card" style="grid-column: span 2;">
-            <h3><i class="fa-solid fa-circle-exclamation"></i> Pemberitahuan Sistem</h3>
-            <p style="font-size: 13px; color: #8b949e; line-height: 1.6; margin-top: 8px;">
-              Aplikasi JOSH akan menembakkan notifikasi desktop sistem internal saat waktu menunjukkan jam pengingat di atas agar Anda tidak melewatkan pengisian data metrik harian.
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <!-- Halaman 7: Pengaturan -->
-      <div id="page-pengaturan" class="page-section">
-        <div class="form-card">
-          <h3><i class="fa-solid fa-gear"></i> Konfigurasi Sistem JOSH</h3>
-          <div class="input-group" style="max-width: 400px; margin-top: 10px;">
-            <label>Satuan Berat Badan</label>
-            <select id="setting-unit-select">
-              <option value="kg">Kilogram (kg)</option>
-              <option value="lbs">Pounds (lbs)</option>
-            </select>
+          <div style="margin-top: 20px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px;">
+              <span>Capaian Target Lemak</span>
+              <span id="progress-fat-label" style="font-weight: 600; color: #f0883e;">0%</span>
+            </div>
+            <div style="background-color: #1f2631; height: 10px; border-radius: 5px; overflow: hidden;">
+              <div id="progress-fat-bar" style="background-color: #f0883e; width: 0%; height: 100%; transition: width 0.4s ease;"></div>
+            </div>
           </div>
-          <div class="input-group" style="max-width: 400px;">
-            <label>Tema Tampilan</label>
-            <select id="setting-theme-select">
-              <option value="dark">JOSH Dark Mode (Bawaan)</option>
-              <option value="amoled">Deep Black AMOLED</option>
-            </select>
-          </div>
-          <button class="btn-submit-form" style="max-width: 200px; margin-top: 10px;" id="btn-save-settings">Terapkan Konfigurasi</button>
-        </div>
-      </div>
-
-      <!-- Halaman 8: Tentang Aplikasi -->
-      <div id="page-tentang" class="page-section">
-        <div class="placeholder-content" style="gap: 10px; padding: 40px; text-align: center;">
-          <i class="fa-solid fa-heart-pulse" style="font-size: 54px; color: #388bfd;"></i>
-          <h2 style="margin-top: 10px;">JOSH App v1.2.0</h2>
-          <p style="font-size: 13px; color: #8b949e; max-width: 500px; line-height: 1.6;">
-            JOSH (Your Diet. Your Progress.) adalah aplikasi manajemen pelacakan kesehatan personal yang dirancang khusus menggunakan ekosistem Native Electron, Chart.js, dan antarmuka modern terintegrasi.
+          
+          <p style="font-size: 11px; color: #8b949e; line-height: 1.5; border-top: 1px solid #1f2631; padding-top: 12px; margin-top: 10px;">
+            *Catatan: Parameter target kebugaran global ini sekarang dapat disinkronkan langsung melalui klik komponen <strong>Profil Pengguna</strong> di pojok kiri bawah.
           </p>
-          <div style="margin-top: 20px; font-size: 12px; color: #58a6ff;">
-            <p>&copy; 2026 JOSH Development Team. All Rights Reserved.</p>
+        </div>
+      </section>
+
+      <!-- ================= PAGE: PENGINGAT / ALARM ================= -->
+      <section id="page-pengingat" class="page-section">
+        <div class="form-card" style="max-width: 500px;">
+          <h3><i class="fa-solid fa-bell-ring"></i> Konfigurasi Alarm Harian</h3>
+          <div class="input-group">
+            <label>Status Notifikasi Sistem</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn active" id="reminder-on">Aktif</button>
+              <button type="button" class="toggle-btn" id="reminder-off">Matikan</button>
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="reminder-time-input">Waktu Pengingat Laporan</label>
+            <input type="time" id="reminder-time-input" value="20:00">
+          </div>
+          <button type="button" class="btn-submit-form" id="btn-save-reminder" style="background-color: #21262d; border: 1px solid #30363d;">
+            Simpan Jadwal Pengingat
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= PAGE: PENGATURAN GLOBAL ================= -->
+      <section id="page-pengaturan" class="page-section">
+        <div class="form-card" style="max-width: 500px;">
+          <h3><i class="fa-solid fa-sliders"></i> Preferensi Aplikasi</h3>
+          <div class="input-group">
+            <label for="setting-unit-select">Satuan Pengukuran</label>
+            <select id="setting-unit-select">
+              <option value="metrik">Metrik (kg, cm)</option>
+              <option value="imperial">Imperial (lbs, inch)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label for="setting-theme-select">Tema Visual</label>
+            <select id="setting-theme-select">
+              <option value="dark">Dark Slate Gray Default</option>
+              <option value="amoled">AMOLED Deep Black</option>
+            </select>
+          </div>
+          <button type="button" class="btn-submit-form" id="btn-save-settings">
+            Terapkan Konfigurasi Visual
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= PAGE: TENTANG APLIKASI ================= -->
+      <section id="page-tentang" class="page-section">
+        <div class="placeholder-content">
+          <i class="fa-solid fa-heart-pulse"></i>
+          <div style="text-align: center;">
+            <h2 style="color: white; margin-bottom: 8px;">JOSH App v1.0.0</h2>
+            <p style="font-size: 13px; max-width: 400px; line-height: 1.6;">
+              Aplikasi pencatat perkembangan diet pintar berbasis desktop dengan performa tinggi. Didesain untuk mempermudah monitoring parameter kesehatan Anda secara mandiri dan teratur.
+            </p>
+            <p style="font-size: 11px; margin-top: 20px; color: #58a6ff;">Lisensi ISC &bull; Dibuat oleh Erzha</p>
           </div>
         </div>
-      </div>
+      </section>
+
     </main>
   </div>
 
-  <!-- Modal Konfigurasi Data Diri -->
-  <div class="modal-overlay" id="profileModal">
+  <!-- ================= MODAL OVERLAY: PROFILE & TARGET (INTEGRATED) ================= -->
+  <div id="profileModal" class="modal-overlay">
     <div class="modal-box">
-      <h3><i class="fa-solid fa-user-gear"></i> Atur Data Diri Awal</h3>
+      <h3><i class="fa-solid fa-user-gear"></i> Pengaturan Profil & Target</h3>
       <div class="modal-body">
+        
+        <!-- Input Profil Pengguna -->
         <div class="input-group">
-          <label>Nama Lengkap</label>
-          <input type="text" id="inputName" value="Erzha Noverico">
+          <label for="inputName">Nama Lengkap</label>
+          <input type="text" id="inputName" placeholder="Masukkan nama Anda...">
         </div>
+        
+        <!-- Input Target Utama Konfigurasi Real-Time -->
         <div class="input-group">
-          <label>Target Berat Badan (kg)</label>
-          <input type="number" id="inputWeight" placeholder="70" step="0.1">
+          <label for="inputTargetWeight">Target Berat Badan (kg)</label>
+          <input type="number" id="inputTargetWeight" placeholder="Contoh: 60" step="0.1">
         </div>
+        
+        <div class="input-group">
+          <label for="inputTargetFat">Target Kadar Lemak (%)</label>
+          <input type="number" id="inputTargetFat" placeholder="Contoh: 15" step="0.1">
+        </div>
+        
       </div>
       <div class="modal-footer">
-        <button class="btn btn-close" id="closeModalBtn">Batal</button>
-        <button class="btn btn-save" id="saveModalBtn">Simpan</button>
+        <button id="closeModalBtn" class="btn btn-close">Batal</button>
+        <button id="saveModalBtn" class="btn btn-save">Simpan Perubahan</button>
       </div>
     </div>
   </div>
 
+  <!-- Script Logic Linker -->
   <script src="renderer.js"></script>
 </body>
 </html>

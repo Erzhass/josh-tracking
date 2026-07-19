@@ -5,36 +5,50 @@ let mainWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 1280,
-    height: 720,
-    minWidth: 1024,
-    minHeight: 640,
-    frame: false, // Mematikan window frame default OS
+    width: 1200,
+    height: 800,
+    minWidth: 900,
+    minHeight: 600,
+    frame: false, // Menghilangkan frame bawaan OS agar custom tombol close/minimize berfungsi
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
     }
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  mainWindow.loadFile('index.html');
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+  // Buka DevTools jika ingin debugging (opsional, hapus jika sudah fix)
+  // mainWindow.webContents.openDevTools();
 }
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
 
-app.on('window-all-closed', () => {
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
+
+app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
 });
 
-// INTER-PROCESS COMMUNICATION JENDELA
-ipcMain.on('window-minimize', () => { if (mainWindow) mainWindow.minimize(); });
+// Handler untuk tombol custom window manajemen di renderer.js
+ipcMain.on('window-minimize', () => {
+  if (mainWindow) mainWindow.minimize();
+});
+
 ipcMain.on('window-maximize', () => {
   if (mainWindow) {
-    if (mainWindow.isMaximized()) mainWindow.unmaximize();
-    else mainWindow.maximize();
+    if (mainWindow.isMaximized()) {
+      mainWindow.unmaximize();
+    } else {
+      mainWindow.maximize();
+    }
   }
 });
-ipcMain.on('window-close', () => { app.quit(); });
+
+ipcMain.on('window-close', () => {
+  app.quit();
+});

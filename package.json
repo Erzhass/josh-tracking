@@ -4,7 +4,7 @@
   "description": "Your Diet. Your Progress.",
   "main": "src/main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron src/main.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },
@@ -23,6 +23,7 @@
       "output": "dist"
     },
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -30,8 +31,7 @@
             "x64"
           ]
         }
-      ],
-      "icon": "build/icon.ico"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -41,7 +41,9 @@
       "shortcutName": "JOSH"
     },
     "files": [
-      "**/*"
+      "src/**/*",
+      "build/**/*",
+      "package.json"
     ]
   }
 }

@@ -62,4 +62,4 @@ Jika kamu ingin menjalankan proyek ini secara lokal untuk keperluan pengembangan
 ## 🛡️ Lisensi & Kredit
 
 Dikembangkan oleh **Erzha** 💻  
-Dilindungi di bawah lisensi [ISC License](LICENSE).
+Dilindungi di bawah lisensi [MIT License](LICENSE).

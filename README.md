@@ -1,7 +1,3 @@
-Siap, paham! Ini dia versi bersih danutuh dari seluruh isi file `README.md` (dari judul paling atas sampai lisensi paling bawah) dalam **satu blok kode Markdown tunggal**.
-
-Tinggal *copy* seluruh isi dalam kotak di bawah ini dan *paste* langsung ke file **`README.md`** milikmu:
-
 ```markdown
 # 🏋️‍♂️ JOSH Fit Tracker
 

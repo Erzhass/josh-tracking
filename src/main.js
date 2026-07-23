@@ -11,15 +11,17 @@ function createWindow() {
     minHeight: 600,
     frame: false, // Menghilangkan frame bawaan OS agar custom tombol close/minimize berfungsi
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      nodeIntegration: true,    // Mengaktifkan fitur Node.js di renderer
+      contextIsolation: false,  // Mengizinkan renderer.js menggunakan require('electron')
+      sandbox: false            // Menonaktifkan sandbox agar nodeIntegration berjalan penuh
     }
   });
 
-  mainWindow.loadFile('index.html');
+  // Perbaikan path agar file HTML terbaca dengan benar di semua OS
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
-  // Buka DevTools jika ingin debugging (opsional, hapus jika sudah fix)
-  // mainWindow.webContents.openDevTools();
+  // Mengaktifkan DevTools otomatis untuk mempermudah deteksi error jika layar masih putih
+  //mainWindow.webContents.openDevTools();
 }
 
 app.whenReady().then(() => {
